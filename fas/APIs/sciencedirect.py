@@ -14,6 +14,7 @@
 from dataclasses import dataclass
 
 from elsapy.elsclient import ElsClient
+from elsapy.elssearch import ElsSearch
 
 
 @dataclass
@@ -24,6 +25,7 @@ class Article:
 
 @dataclass
 class SearchStat:
+    articles: list[Article]
     publications_number: int
     new_publications: int
 
@@ -45,4 +47,38 @@ class ScopusArticleSearcher:
         """
         self.client = ElsClient(api_key)
 
+    def search_for_theme(self, search_request: str, minimal_year: int) -> list[Article]:
+        """
+        Searches for articles with given request and returns results.
 
+        :param search_request: search request.
+        :param minimal_year: minimal year of the publications.
+        :return: array of Article dataclasses with results.
+        """
+        searcher = ElsSearch('TITLE-ABS-KEY("{}") AND PUBYEAR >= {}'.format(search_request, minimal_year), 'scopus')
+        searcher.execute(self.client, get_all=True)
+
+        results = []
+        for article in searcher.results:
+            title = article['dc:title']
+            year = int(article['prism:coverDate'][0:4])
+            assert year >= minimal_year
+            results.append(Article(title, year))
+
+        return results
+
+    def theme_statistics(self, search_request: str, minimal_year: int, new_year: int) -> SearchStat:
+        """
+        Calculates statistics (number of articles and number of new articles) for a given request.
+
+        :param search_request: search request.
+        :param minimal_year: minimal year of the publications.
+        :param new_year: year after which publications are considered new.
+        :return: SearchStat dataclass with all statistics
+        """
+
+        results = self.search_for_theme(search_request, minimal_year)
+        number_of_articles = len(results)
+        number_of_new_articles = sum([1 if art.year >= new_year else 0 for art in results])
+
+        return SearchStat(results, number_of_articles, number_of_new_articles)
