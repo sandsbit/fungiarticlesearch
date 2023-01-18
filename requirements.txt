@@ -1,1 +1,2 @@
-wikipedia-api
+wikipedia-api~=0.5.8
+elsapy~=0.5.1
