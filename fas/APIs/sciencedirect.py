@@ -56,7 +56,7 @@ class ScopusArticleSearcher:
         :param minimal_year: minimal year of the publications.
         :return: array of Article dataclasses with results.
         """
-        searcher = ElsSearch('TITLE-ABS-KEY("{}") AND PUBYEAR >= {}'.format(search_request, minimal_year), 'scopus')
+        searcher = ElsSearch('TITLE-ABS-KEY("{}") AND PUBYEAR AFT {}'.format(search_request, minimal_year), 'scopus')
         searcher.execute(self.client, get_all=True)
 
         results = []
