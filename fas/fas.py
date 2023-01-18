@@ -73,7 +73,7 @@ def main() -> None:
     fungi_articles = wikipedia.list_of_articles_in_category(FUNGI_CATEGORY)
     fungi_count = len(fungi_articles)
     e = time.time()
-    print('Parsed {} european fungi articles in {.2f}s.'.format(len(fungi_articles), e - s))
+    print('Parsed {} european fungi articles in {:.2f}s.'.format(len(fungi_articles), e - s))
 
     if not CACHE_FILE.exists():
         print('Searching Scopus with given request: "{}"'.format(REQUEST))
