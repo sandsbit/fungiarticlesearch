@@ -25,6 +25,7 @@ class Article:
 
 @dataclass
 class SearchStat:
+    theme: str
     articles: list[Article]
     publications_number: int
     new_publications: int
@@ -67,13 +68,14 @@ class ScopusArticleSearcher:
 
         return results
 
-    def theme_statistics(self, search_request: str, minimal_year: int, new_year: int) -> SearchStat:
+    def theme_statistics(self, search_request: str, minimal_year: int, new_year: int, theme: str) -> SearchStat:
         """
         Calculates statistics (number of articles and number of new articles) for a given request.
 
         :param search_request: search request.
         :param minimal_year: minimal year of the publications.
         :param new_year: year after which publications are considered new.
+        :param theme: theme os the search.
         :return: SearchStat dataclass with all statistics
         """
 
@@ -81,4 +83,4 @@ class ScopusArticleSearcher:
         number_of_articles = len(results)
         number_of_new_articles = sum([1 if art.year >= new_year else 0 for art in results])
 
-        return SearchStat(results, number_of_articles, number_of_new_articles)
+        return SearchStat(theme, results, number_of_articles, number_of_new_articles)
