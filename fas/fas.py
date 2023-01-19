@@ -85,12 +85,12 @@ def main() -> None:
             elapsed = int(time.time() - s)
             elapsed_minutes, elapsed_seconds = divmod(elapsed, 60)
             if i != 0:
-                estimated = (fungi_count - i) * (elapsed / i)
+                estimated = int((fungi_count - i) * (elapsed / i))
                 est_minutes, est_seconds = divmod(estimated, 60)
             else:
                 est_minutes = '-'
                 est_seconds = '-'
-            print('\rSearching fungi: {} ({}/{}). Elapsed time: {}m {}s.'
+            print('\rSearching fungi: {} ({}/{}). Elapsed time: {}m {}s. '
                   'Estimated time: {}m {}s'.format(article, i, fungi_count, elapsed_minutes, elapsed_seconds,
                                                    est_minutes, est_seconds), end='')
             search_results.append(searcher.theme_statistics(REQUEST.format(article), MINIMAL_YEAR, NEW_YEAR, article))
