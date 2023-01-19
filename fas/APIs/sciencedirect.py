@@ -59,7 +59,7 @@ class ScopusArticleSearcher:
         searcher = ElsSearch('TITLE-ABS-KEY("{}") AND PUBYEAR AFT {}'.format(search_request, minimal_year), 'scopus')
         searcher.execute(self.client, get_all=True)
 
-        if type(searcher.results) is dict and 'error' in searcher.results.keys():
+        if 'error' in searcher.results[0].keys():
             if searcher.results['error'] == 'Result set was empty':
                 return []
             else:
