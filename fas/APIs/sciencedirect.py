@@ -60,10 +60,10 @@ class ScopusArticleSearcher:
         searcher.execute(self.client, get_all=True)
 
         if 'error' in searcher.results[0].keys():
-            if searcher.results['error'] == 'Result set was empty':
+            if searcher.results[0]['error'] == 'Result set was empty':
                 return []
             else:
-                raise RuntimeError('Got error while parsing Scopus: ' + searcher.results['error'])
+                raise RuntimeError('Got error while parsing Scopus: ' + searcher.results[0]['error'])
 
         results = []
         for article in searcher.results:
