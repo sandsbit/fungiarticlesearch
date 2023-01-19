@@ -67,8 +67,11 @@ class ScopusArticleSearcher:
 
         results = []
         for article in searcher.results:
-            title = article['dc:title']
-            year = int(article['prism:coverDate'][0:4])
+            try:
+                title = article['dc:title']
+                year = int(article['prism:coverDate'][0:4])
+            except KeyError as e:
+                raise RuntimeError('Invalid key: ' + str(e) + '. Article: ' + str(article))
             assert year >= minimal_year
             results.append(Article(title, year))
 
